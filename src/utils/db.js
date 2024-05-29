@@ -1,14 +1,12 @@
 const admin = require('firebase-admin')
-const config = require('../config/config')
+require('dotenv').config()
 
-const initializeFirestore = () => {
-  admin.initializeApp({
-    credential: admin.credential.cert(config.firestoreConfig),
-  })
+const fsCreds = JSON.parse(process.env.FIRESTORE_CREDS)
 
-  const db = admin.firestore()
-  console.log('Firestore connected successfully')
-  return db
-}
+admin.initializeApp({
+  credential: admin.credential.cert(fsCreds),
+})
 
-module.exports = initializeFirestore
+const db = admin.firestore()
+
+module.exports = db

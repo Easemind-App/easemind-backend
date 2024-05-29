@@ -1,17 +1,23 @@
 'use strict'
 
 const Hapi = require('@hapi/hapi')
-const config = require('./src/config/config')
 const userRoutes = require('./src/routes/userRoutes')
 
 const init = async () => {
   const server = Hapi.server({
-    port: config.port,
+    port: 3000,
     host: 'localhost',
+    routes: {
+      cors: true, // Enable CORS if needed
+      payload: {
+        parse: true, // Enable automatic payload parsing
+        allow: 'application/json', // Only allow JSON payloads
+      },
+    },
   })
 
-  // Register routes
-  server.route(userRoutes)
+  // Add all routes
+  userRoutes.forEach((route) => server.route(route))
 
   await server.start()
   console.log('Server running on %s', server.info.uri)
