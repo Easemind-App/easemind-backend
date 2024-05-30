@@ -3,7 +3,7 @@ const userController = require('../controllers/userController')
 module.exports = [
   {
     method: 'POST',
-    path: '/users',
+    path: '/auth',
     handler: userController.createUser,
   },
   {
@@ -13,7 +13,7 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/users',
+    path: '/test/getUsers',
     handler: userController.getAllUsers,
   },
 ]
