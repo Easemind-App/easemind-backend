@@ -1,44 +1,48 @@
 const userService = require('../services/userService')
 const Joi = require('@hapi/joi')
 
-const createUser = async (request, h) => {
+const createUser = async (req, res) => {
   const schema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
+    userName: Joi.string().min(3).max(30).required(),
     email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
   })
 
-  const { error, value } = schema.validate(request.payload)
+  const { error, value } = schema.validate(req.payload)
   if (error) {
-    return h.response(error.details).code(400)
+    return res.response(error.details).code(400)
   }
 
   try {
     const user = await userService.createUser(value)
-    return h.response(user).code(201)
+    return res
+      .response({
+        email: user.email,
+        message: 'User logged in successfully!',
+      })
+      .code(201)
   } catch (err) {
-    return h.response(err.message).code(500)
+    return res.response(err.message).code(500)
   }
 }
 
-const getUserById = async (request, h) => {
+const getUserById = async (req, res) => {
   try {
-    const user = await userService.getUserById(request.params.id)
+    const user = await userService.getUserById(req.params.id)
     if (!user) {
-      return h.response({ message: 'User not found' }).code(404)
+      return res.response({ message: 'User not found' }).code(404)
     }
-    return h.response(user).code(200)
+    return res.response(user).code(200)
   } catch (err) {
-    return h.response(err.message).code(500)
+    return res.response(err.message).code(500)
   }
 }
 
-const getAllUsers = async (request, h) => {
+const getAllUsers = async (req, res) => {
   try {
     const users = await userService.getAllUsers()
-    return h.response(users).code(200)
+    return res.response(users).code(200)
   } catch (err) {
-    return h.response(err.message).code(500)
+    return res.response(err.message).code(500)
   }
 }
 
