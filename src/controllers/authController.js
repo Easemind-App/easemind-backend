@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
       .response({
         message: 'User logged in successfully!',
         data: {
-          email: user.user.email,
+          email: user.email,
           userDetails: user.userDetails,
         },
       })

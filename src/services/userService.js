@@ -1,24 +1,34 @@
 const db = require('../utils/db')
 const { User, UserDetails } = require('../models/userModel')
 
+// const createUser = async (userData) => {
+//   const usersColl = db.collection('users')
+//   const user = new User(userData.userName, userData.email, 1) //Constructor of User
+//   const userDetails = new UserDetails(null, null) //Constructor of UserDetails
+
+//   const checkUser = await usersColl.where('email', '==', userData.email).get()
+
+//   if (checkUser.empty) {
+//     const usersRef = await usersColl.add(JSON.parse(JSON.stringify(user))) // User doesn't exist, create a new document
+//   }
+
+//   return { user } // User exists, send user data
+// }
+
 const createUser = async (userData) => {
   const usersColl = db.collection('users')
-  const user = new User(userData.userName, userData.email, 1) //Constructor of User
-  const userDetails = new UserDetails(null, null) //Constructor of UserDetails
+
+  const userDetails = new UserDetails(null, null) // Initiate userDetails with null
+
+  const user = new User(userData.userName, userData.email, 1, userDetails)
 
   const checkUser = await usersColl.where('email', '==', userData.email).get()
 
   if (checkUser.empty) {
-    const usersRef = await usersColl.add(
-      JSON.parse(JSON.stringify(userDetails))
-    ) // User doesn't exist, create a new document
-
-    await usersRef
-      .collection('userDetails')
-      .add(JSON.parse(JSON.stringify(user))) // Initialize userDetails with null values
+    await usersColl.add(JSON.parse(JSON.stringify(user)))
   }
 
-  return { user, userDetails } // User exists, send user data
+  return user
 }
 
 const getUserById = async (id) => {
