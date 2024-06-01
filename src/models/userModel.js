@@ -6,4 +6,11 @@ class User {
   }
 }
 
-module.exports = User
+class UserDetails {
+  constructor(dateOfBirth, gender) {
+    this.dateOfBirth = dateOfBirth
+    this.gender = gender
+  }
+}
+
+module.exports = { User, UserDetails }
