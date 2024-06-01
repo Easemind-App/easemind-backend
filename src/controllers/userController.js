@@ -14,10 +14,14 @@ const createUser = async (req, res) => {
 
   try {
     const user = await userService.createUser(value)
+    console.log(user)
     return res
       .response({
-        email: user.email,
         message: 'User logged in successfully!',
+        data: {
+          email: user.user.email,
+          userDetails: user.userDetails,
+        },
       })
       .code(201)
   } catch (err) {
