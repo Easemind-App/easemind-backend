@@ -1,20 +1,6 @@
 const db = require('../utils/db')
 const { User, UserDetails } = require('../models/userModel')
 
-// const createUser = async (userData) => {
-//   const usersColl = db.collection('users')
-//   const user = new User(userData.userName, userData.email, 1) //Constructor of User
-//   const userDetails = new UserDetails(null, null) //Constructor of UserDetails
-
-//   const checkUser = await usersColl.where('email', '==', userData.email).get()
-
-//   if (checkUser.empty) {
-//     const usersRef = await usersColl.add(JSON.parse(JSON.stringify(user))) // User doesn't exist, create a new document
-//   }
-
-//   return { user } // User exists, send user data
-// }
-
 const createUser = async (userData) => {
   const usersColl = db.collection('users')
 
@@ -31,15 +17,6 @@ const createUser = async (userData) => {
   return user
 }
 
-const getUserById = async (id) => {
-  const userRef = db.collection('users').doc(id)
-  const userDoc = await userRef.get()
-  if (!userDoc.exists) {
-    throw new Error('User not found')
-  }
-  return userDoc.data()
-}
-
 const getAllUsers = async () => {
   const usersRef = db.collection('users')
   const snapshot = await usersRef.get()
@@ -52,6 +29,5 @@ const getAllUsers = async () => {
 
 module.exports = {
   createUser,
-  getUserById,
   getAllUsers,
 }
