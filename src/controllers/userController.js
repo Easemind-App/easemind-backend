@@ -29,12 +29,12 @@ const getUserById = async (req, res) => {
   try {
     const user = await userService.getUserById(req.params.id);
     if (!user) {
-      return res.response({ message: 'User not found' }).code(404);
+      return res.response({ message: 'User not found' }).code(400);
     }
 
     const { email, isActive, userDetails, userName } = user;
     if (!userDetails) {
-      return res.response({ message: 'User details not found' }).code(404);
+      return res.response({ message: 'User details not found' }).code(400);
     }
 
     const { dateOfBirth, gender } = userDetails;
