@@ -33,8 +33,25 @@ const getAllUsers = async () => {
   return users
 }
 
+const updateUser = async (id, userData) => {
+  const userRef = db.collection('users').doc(id);
+  const userDoc = await userRef.get();
+
+  if (!userDoc.exists) {
+    throw new Error('User not found');
+  }
+
+  await userRef.update({
+    'userDetails.dateOfBirth': userData.dateOfBirth,
+    'userDetails.gender': userData.gender
+  });
+
+  return { message: 'User updated successfully' };
+};
+
 module.exports = {
   createUser,
   getUserById,
   getAllUsers,
+  updateUser,
 }
