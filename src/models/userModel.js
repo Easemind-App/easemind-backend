@@ -1,9 +1,17 @@
 class User {
-  constructor(userName, email, isActive) {
+  constructor(userName, email, isActive, UserDetails) {
     this.userName = userName
     this.email = email
     this.isActive = isActive
+    this.userDetails = UserDetails
   }
 }
 
-module.exports = User
+class UserDetails {
+  constructor(dateOfBirth, gender) {
+    this.dateOfBirth = dateOfBirth
+    this.gender = gender
+  }
+}
+
+module.exports = { User, UserDetails }

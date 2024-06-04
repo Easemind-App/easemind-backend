@@ -1,10 +1,10 @@
-const userController = require('../controllers/userController')
+const authController = require('../controllers/authController')
 
 module.exports = [
   {
     method: 'POST',
     path: '/auth',
-    handler: userController.createUser,
+    handler: authController.createUser,
   },
   {
     method: 'GET',
@@ -14,7 +14,7 @@ module.exports = [
   {
     method: 'GET',
     path: '/test/getUsers',
-    handler: userController.getAllUsers,
+    handler: authController.getAllUsers,
   },
   {
     method: 'PUT',
