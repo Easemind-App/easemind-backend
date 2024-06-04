@@ -8,12 +8,17 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/users/{id}',
+    path: '/profile/{id}',
     handler: userController.getUserById,
   },
   {
     method: 'GET',
     path: '/test/getUsers',
     handler: userController.getAllUsers,
+  },
+  {
+    method: 'PUT',
+    path: '/profile/edit/{id}',
+    handler: userController.updateUser,
   },
 ]
