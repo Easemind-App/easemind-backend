@@ -2,6 +2,7 @@
 
 const Hapi = require('@hapi/hapi')
 const userRoutes = require('./src/routes/userRoutes')
+const journalRoutes = require('./src/routes/journalRoutes')
 
 const init = async () => {
   const server = Hapi.server({
@@ -18,6 +19,7 @@ const init = async () => {
 
   // Add all routes
   userRoutes.forEach((route) => server.route(route))
+  journalRoutes.forEach((route) => server.route(route))
 
   await server.start()
   console.log('Server running on %s', server.info.uri)

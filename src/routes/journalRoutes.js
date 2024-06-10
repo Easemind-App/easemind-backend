@@ -1,24 +1,24 @@
 const journalController = require('../controllers/journalController')
 
-server.route([
-  {
-    method: 'POST',
-    path: '/users/{userId}/journals',
-    handler: journalController.addJournalEntryController,
-  },
+module.exports = [
   {
     method: 'GET',
-    path: '/users/{userId}/journals',
-    handler: journalController.getUserJournalsController,
+    path: '/{userId}/journals',
+    handler: journalController.getUserJournals,
+  },
+  {
+    method: 'POST',
+    path: '/{userId}/journals/create',
+    handler: journalController.addJournalEntry,
   },
   {
     method: 'PUT',
-    path: '/users/{userId}/journals/{journalId}',
-    handler: journalController.updateJournalEntryController,
+    path: '/{userId}/journals/edit/{journalId}',
+    handler: journalController.updateJournalEntry,
   },
   {
     method: 'DELETE',
-    path: '/users/{userId}/journals/{journalId}',
-    handler: journalController.deleteJournalEntryController,
+    path: '/{userId}/journals/delete/{journalId}',
+    handler: journalController.deleteJournalEntry,
   },
-])
+]

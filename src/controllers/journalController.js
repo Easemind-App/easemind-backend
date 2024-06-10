@@ -1,13 +1,11 @@
 const journalService = require('../services/journalService')
-const Joi = require('joi')
-
-const Joi = require('joi')
+const Joi = require('@hapi/joi')
 
 const addJournalEntry = async (req, res) => {
   const schema = Joi.object({
     userId: Joi.string().required(),
     journalData: Joi.object({
-      journalDate: Joi.date().required(),
+      journalDate: Joi.string().required(),
       age: Joi.number().integer().min(0).required(),
       gender: Joi.string().required(),
       bmi: Joi.string().required(),
@@ -17,10 +15,11 @@ const addJournalEntry = async (req, res) => {
       isActive: Joi.boolean().required(),
     }).required(),
   })
-
+  console.log(req.params)
+  console.log(req.payload.journalData)
   const { error, value } = schema.validate({
     userId: req.params.userId,
-    journalData: req.payload,
+    journalData: req.payload.journalData,
   })
 
   if (error) {
@@ -48,6 +47,7 @@ const getUserJournals = async (req, res) => {
     userId: Joi.string().required(),
   })
 
+  console.log(req)
   const { error, value } = schema.validate({ userId: req.params.userId })
 
   if (error) {
@@ -72,7 +72,7 @@ const updateJournalEntry = async (req, res) => {
   const { error, value } = schema.validate({
     userId: req.params.userId,
     journalId: req.params.journalId,
-    journalData: req.payload,
+    journalData: req.payload.journalData,
   })
 
   if (error) {
@@ -112,7 +112,7 @@ const deleteJournalEntry = async (req, res) => {
     await journalService.deleteJournalEntry(value.userId, value.journalId)
     return res
       .response({ message: 'Journal entry deactivated successfully' })
-      .code(204)
+      .code(200)
   } catch (err) {
     return res.response({ message: err.message }).code(500)
   }
