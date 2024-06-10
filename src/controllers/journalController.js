@@ -1,0 +1,126 @@
+const journalService = require('../services/journalService')
+const Joi = require('joi')
+
+const Joi = require('joi')
+
+const addJournalEntry = async (req, res) => {
+  const schema = Joi.object({
+    userId: Joi.string().required(),
+    journalData: Joi.object({
+      journalDate: Joi.date().required(),
+      age: Joi.number().integer().min(0).required(),
+      gender: Joi.string().required(),
+      bmi: Joi.string().required(),
+      faceDetection: Joi.string().required(),
+      thoughtSentiment: Joi.string().required(),
+      thoughts: Joi.string().required(),
+      isActive: Joi.boolean().required(),
+    }).required(),
+  })
+
+  const { error, value } = schema.validate({
+    userId: req.params.userId,
+    journalData: req.payload,
+  })
+
+  if (error) {
+    return res.response(error.details).code(400)
+  }
+
+  try {
+    const result = await journalService.addJournalEntry(
+      value.userId,
+      value.journalData
+    )
+    return res
+      .response({
+        message: 'Journal entry added successfully',
+        journalId: result.id,
+      })
+      .code(201)
+  } catch (err) {
+    return res.response({ message: err.message }).code(500)
+  }
+}
+
+const getUserJournals = async (req, res) => {
+  const schema = Joi.object({
+    userId: Joi.string().required(),
+  })
+
+  const { error, value } = schema.validate({ userId: req.params.userId })
+
+  if (error) {
+    return res.response(error.details).code(400)
+  }
+
+  try {
+    const journals = await journalService.getUserJournals(value.userId)
+    return res.response({ journals }).code(200)
+  } catch (err) {
+    return res.response({ message: err.message }).code(500)
+  }
+}
+
+const updateJournalEntry = async (req, res) => {
+  const schema = Joi.object({
+    userId: Joi.string().required(),
+    journalId: Joi.string().required(),
+    journalData: Joi.object().required(), // Can include specific fields to validate if needed
+  })
+
+  const { error, value } = schema.validate({
+    userId: req.params.userId,
+    journalId: req.params.journalId,
+    journalData: req.payload,
+  })
+
+  if (error) {
+    return res.response(error.details).code(400)
+  }
+
+  try {
+    await journalService.updateJournalEntry(
+      value.userId,
+      value.journalId,
+      value.journalData
+    )
+    return res
+      .response({ message: 'Journal entry updated successfully' })
+      .code(200)
+  } catch (err) {
+    return res.response({ message: err.message }).code(500)
+  }
+}
+
+const deleteJournalEntry = async (req, res) => {
+  const schema = Joi.object({
+    userId: Joi.string().required(),
+    journalId: Joi.string().required(),
+  })
+
+  const { error, value } = schema.validate({
+    userId: req.params.userId,
+    journalId: req.params.journalId,
+  })
+
+  if (error) {
+    return res.response(error.details).code(400)
+  }
+
+  try {
+    await journalService.deleteJournalEntry(value.userId, value.journalId)
+    return res
+      .response({ message: 'Journal entry deactivated successfully' })
+      .code(204)
+  } catch (err) {
+    return res.response({ message: err.message }).code(500)
+  }
+}
+
+module.exports = {
+  addJournalEntry,
+  getUserJournals,
+  updateJournalEntry,
+  deleteJournalEntry,
+}
