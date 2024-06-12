@@ -1,8 +1,14 @@
 const db = require('../utils/db')
 const Journal = require('../models/journalModel')
+const { getQuoteBySentiment } = require('./quoteService')
 
 const addJournalEntry = async (userId, journalData) => {
   const journalRef = db.collection('users').doc(userId).collection('journals')
+
+  const quote = await getQuoteBySentiment(journalData.thoughtSentiment)
+  if (!quote) {
+    throw new Error('Failed to fetch quote for the given sentiment.')
+  }
   const journal = new Journal(
     journalData.journalDate,
     journalData.age,
@@ -11,8 +17,10 @@ const addJournalEntry = async (userId, journalData) => {
     journalData.faceDetection,
     journalData.thoughtSentiment,
     journalData.thoughts,
-    journalData.isActive
+    quote,
+    true
   )
+
   return await journalRef.add(JSON.parse(JSON.stringify(journal)))
 }
 

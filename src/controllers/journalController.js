@@ -12,7 +12,6 @@ const addJournalEntry = async (req, res) => {
       faceDetection: Joi.string().required(),
       thoughtSentiment: Joi.string().required(),
       thoughts: Joi.string().required(),
-      isActive: Joi.boolean().required(),
     }).required(),
   })
   console.log(req.params)
@@ -27,14 +26,10 @@ const addJournalEntry = async (req, res) => {
   }
 
   try {
-    const result = await journalService.addJournalEntry(
-      value.userId,
-      value.journalData
-    )
+    await journalService.addJournalEntry(value.userId, value.journalData)
     return res
       .response({
         message: 'Journal entry added successfully',
-        journalId: result.id,
       })
       .code(201)
   } catch (err) {
