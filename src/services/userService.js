@@ -20,10 +20,14 @@ const createUser = async (userData) => {
 const getUserById = async (id) => {
   const userRef = db.collection('users').doc(id)
   const userDoc = await userRef.get()
-  if (!userDoc.exists) {
+
+  const userData = userDoc.data()
+
+  if (!userDoc.exists || !userData.isActive) {
     throw new Error('User not found')
   }
-  return userDoc.data()
+
+  return userData
 }
 
 const getAllUsers = async () => {
