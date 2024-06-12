@@ -7,6 +7,7 @@ class Journal {
     faceDetection,
     thoughtSentiment,
     thoughts,
+    quote,
     isActive
   ) {
     this.journalDate = journalDate
@@ -16,6 +17,7 @@ class Journal {
     this.faceDetection = faceDetection
     this.thoughtSentiment = thoughtSentiment
     this.thoughts = thoughts
+    this.quote = quote
     this.isActive = isActive
   }
 }
