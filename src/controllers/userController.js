@@ -1,7 +1,8 @@
 const userService = require('../services/userService')
 const Joi = require('@hapi/joi')
+const { generateToken } = require('../utils/jsonWebToken')
 
-const createUser = async (req, res) => {
+const authorizeUser = async (req, res) => {
   const schema = Joi.object({
     userName: Joi.string().min(3).max(30).required(),
     email: Joi.string().email().required(),
@@ -13,17 +14,18 @@ const createUser = async (req, res) => {
   }
 
   try {
-    const user = await userService.createUser(value)
-    console.log(user)
+    const user = await userService.authorizeUser(value)
+    const token = generateToken(user)
+
     return res
       .response({
         message: 'User logged in successfully!',
-        data: {
+        token,
+        payload: {
           email: user.email,
-          userDetails: user.userDetails,
         },
       })
-      .code(201)
+      .code(200)
   } catch (err) {
     return res.response(err.message).code(500)
   }
@@ -32,6 +34,7 @@ const createUser = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const user = await userService.getUserById(req.params.id)
+
     if (!user) {
       return res.response({ message: 'User not found' }).code(400)
     }
@@ -45,6 +48,7 @@ const getUserById = async (req, res) => {
 
     return res.response({ userName, email, dateOfBirth, gender }).code(200)
   } catch (err) {
+    console.log(err.message)
     return res.response(err.message).code(500)
   }
 }
@@ -79,7 +83,7 @@ const updateUser = async (req, res) => {
 }
 
 module.exports = {
-  createUser,
+  authorizeUser,
   getUserById,
   getAllUsers,
   updateUser,
