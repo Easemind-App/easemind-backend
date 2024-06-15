@@ -3,7 +3,7 @@ const journalController = require('../controllers/journalController')
 module.exports = [
   {
     method: 'GET',
-    path: '/{userId}/journals',
+    path: '/journals',
     options: {
       auth: 'jwt',
       handler: journalController.getUserJournals,
@@ -11,23 +11,23 @@ module.exports = [
   },
   {
     method: 'POST',
-    path: '/{userId}/journals/create',
+    path: '/journals/create',
     options: {
       auth: 'jwt',
       handler: journalController.addJournalEntry,
     },
   },
-  {
-    method: 'PUT',
-    path: '/{userId}/journals/edit/{journalId}',
-    options: {
-      auth: 'jwt',
-      handler: journalController.updateJournalEntry,
-    },
-  },
+  // {
+  //   method: 'PUT',
+  //   path: '/{userId}/journals/edit/{journalId}',
+  //   options: {
+  //     auth: 'jwt',
+  //     handler: journalController.updateJournalEntry,
+  //   },
+  // },
   {
     method: 'DELETE',
-    path: '/{userId}/journals/delete/{journalId}',
+    path: '/journals/delete/{journalId}',
     options: {
       auth: 'jwt',
       handler: journalController.deleteJournalEntry,

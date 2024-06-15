@@ -6,20 +6,19 @@ const { BadRequestError } = require('../utils/errors')
 const addJournalEntry = async (userId, journalData) => {
   const journalRef = db.collection('users').doc(userId).collection('journals')
 
-  const quote = await getQuoteBySentiment(journalData.thoughtSentiment)
+  const quote = await getQuoteBySentiment('happy')
   if (!quote) {
     throw new BadRequestError('Sentiment given is incorrect')
   }
 
   const journal = new Journal(
     journalData.journalDate,
-    journalData.age,
-    journalData.gender,
     journalData.bmi,
     journalData.faceDetection,
     journalData.thoughtSentiment,
     journalData.thoughts,
     quote,
+    journalData.result,
     true
   )
 
