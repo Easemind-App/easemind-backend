@@ -11,23 +11,23 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/profile/{id}',
+    path: '/profile',
     options: {
       auth: 'jwt',
       handler: userController.getUserById,
     },
   },
-  {
-    method: 'GET',
-    path: '/test/getUsers',
-    options: {
-      auth: 'jwt',
-      handler: userController.getAllUsers,
-    },
-  },
+  // {
+  //   method: 'GET',
+  //   path: '/test/getUsers',
+  //   options: {
+  //     auth: 'jwt',
+  //     handler: userController.getAllUsers,
+  //   },
+  // },
   {
     method: 'PUT',
-    path: '/profile/edit/{id}',
+    path: '/profile/edit',
     options: {
       auth: 'jwt',
       handler: userController.updateUser,

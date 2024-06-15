@@ -15,8 +15,8 @@ const authorizeUser = async (req, res) => {
 
   try {
     const user = await userService.authorizeUser(value)
+    console.log(user)
     const token = generateToken(user)
-
     return res
       .response({
         message: 'User logged in successfully!',
@@ -30,7 +30,7 @@ const authorizeUser = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const user = await userService.getUserById(req.params.id)
+    const user = await userService.getUserById(req.auth.credentials.userId)
 
     if (!user) {
       return res.response({ message: 'User not found' }).code(400)
@@ -72,7 +72,10 @@ const updateUser = async (req, res) => {
   }
 
   try {
-    const user = await userService.updateUser(req.params.id, value)
+    const user = await userService.updateUser(
+      req.auth.credentials.userId,
+      value
+    )
     return res.response(user).code(200)
   } catch (err) {
     return res.response(err.message).code(500)

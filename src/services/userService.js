@@ -17,11 +17,11 @@ const authorizeUser = async (userData) => {
     // If no active user is found, create a new one
     const newUserRef = await usersColl.add(JSON.parse(JSON.stringify(user)))
     const newUser = await newUserRef.get()
-    return { ...newUser.data(), id: newUser.id } // Include the user's Firestore document ID
+    return { ...newUser.data(), userId: newUser.id } // Include the user's Firestore document ID
   } else {
     // Active user exists, return the existing user data
     const existingUser = checkUser.docs[0].data()
-    return { ...existingUser, userDetailsd: checkUser.docs[0].id }
+    return { ...existingUser, userId: checkUser.docs[0].id }
   }
 }
 
