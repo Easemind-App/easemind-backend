@@ -5,7 +5,7 @@ module.exports = [
     method: 'POST',
     path: '/auth',
     options: {
-      auth: false, // This route likely authenticates the user, so it doesn't require prior authentication
+      auth: false,
       handler: userController.authorizeUser,
     },
   },
@@ -13,7 +13,7 @@ module.exports = [
     method: 'GET',
     path: '/profile/{id}',
     options: {
-      auth: 'jwt', // Require JWT authentication to access a user's profile
+      auth: 'jwt',
       handler: userController.getUserById,
     },
   },
@@ -21,7 +21,7 @@ module.exports = [
     method: 'GET',
     path: '/test/getUsers',
     options: {
-      auth: 'jwt', // Require JWT authentication to get all users, if this should be restricted
+      auth: 'jwt',
       handler: userController.getAllUsers,
     },
   },
@@ -29,7 +29,7 @@ module.exports = [
     method: 'PUT',
     path: '/profile/edit/{id}',
     options: {
-      auth: 'jwt', // Require JWT authentication to edit a user's profile
+      auth: 'jwt',
       handler: userController.updateUser,
     },
   },
