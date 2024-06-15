@@ -1,7 +1,6 @@
 'use strict'
 
 const Hapi = require('@hapi/hapi')
-const Jwt = require('jsonwebtoken')
 const HapiAuthJwt2 = require('hapi-auth-jwt2')
 const userRoutes = require('./src/routes/userRoutes')
 const journalRoutes = require('./src/routes/journalRoutes')
@@ -21,10 +20,10 @@ const init = async () => {
     port: 3000,
     host: 'localhost',
     routes: {
-      cors: true, // Enable CORS if needed
+      cors: true,
       payload: {
-        parse: true, // Enable automatic payload parsing
-        allow: 'application/json', // Only allow JSON payloads
+        parse: true,
+        allow: 'application/json',
       },
     },
   })
@@ -34,14 +33,14 @@ const init = async () => {
 
   // Define JWT strategy
   server.auth.strategy('jwt', 'jwt', {
-    key: process.env.JWT_SECRET, // Your secret key
-    validate, // Add your validation function here
-    verifyOptions: { algorithms: ['HS256'] }, // Specify the algorithms you wish to use
+    key: process.env.JWT_SECRET, //
+    validate,
+    verifyOptions: { algorithms: ['HS256'] },
   })
 
   server.auth.default('jwt')
 
-  // Add all routes
+  // Routes
   userRoutes.forEach((route) => server.route(route))
   journalRoutes.forEach((route) => server.route(route))
 
