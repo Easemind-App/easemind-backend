@@ -21,9 +21,6 @@ const authorizeUser = async (req, res) => {
       .response({
         message: 'User logged in successfully!',
         token,
-        payload: {
-          email: user.email,
-        },
       })
       .code(200)
   } catch (err) {

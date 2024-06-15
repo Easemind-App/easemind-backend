@@ -47,7 +47,7 @@ const getUserJournals = async (req, res) => {
     userId: Joi.string().required(),
   })
 
-  console.log(req)
+  console.log('Decoded JWT Payload:', req.auth.credentials)
   const { error, value } = schema.validate({ userId: req.params.userId })
 
   if (error) {
@@ -110,9 +110,7 @@ const deleteJournalEntry = async (req, res) => {
 
   try {
     await journalService.deleteJournalEntry(value.userId, value.journalId)
-    return res
-      .response({ message: 'Journal entry deactivated successfully' })
-      .code(200)
+    return res.response({ message: 'Journal deleted successfully' }).code(200)
   } catch (err) {
     return res.response({ message: err.message }).code(500)
   }

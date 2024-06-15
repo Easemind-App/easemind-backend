@@ -4,21 +4,33 @@ module.exports = [
   {
     method: 'GET',
     path: '/{userId}/journals',
-    handler: journalController.getUserJournals,
+    options: {
+      auth: 'jwt',
+      handler: journalController.getUserJournals,
+    },
   },
   {
     method: 'POST',
     path: '/{userId}/journals/create',
-    handler: journalController.addJournalEntry,
+    options: {
+      auth: 'jwt',
+      handler: journalController.addJournalEntry,
+    },
   },
   {
     method: 'PUT',
     path: '/{userId}/journals/edit/{journalId}',
-    handler: journalController.updateJournalEntry,
+    options: {
+      auth: 'jwt',
+      handler: journalController.updateJournalEntry,
+    },
   },
   {
     method: 'DELETE',
     path: '/{userId}/journals/delete/{journalId}',
-    handler: journalController.deleteJournalEntry,
+    options: {
+      auth: 'jwt',
+      handler: journalController.deleteJournalEntry,
+    },
   },
 ]
