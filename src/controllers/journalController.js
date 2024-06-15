@@ -33,7 +33,12 @@ const addJournalEntry = async (req, res) => {
       })
       .code(201)
   } catch (err) {
-    return res.response({ message: err.message }).code(500)
+    return res
+      .response({
+        status: 'error',
+        message: err.message,
+      })
+      .code(err.statusCode || 500)
   }
 }
 

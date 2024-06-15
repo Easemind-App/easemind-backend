@@ -20,7 +20,6 @@ const getQuoteBySentiment = async (sentiment) => {
     return quoteDoc.data().text
   } catch (error) {
     console.error('Error fetching quote by sentiment:', error)
-    throw new Error('Error fetching quote by sentiment.')
   }
 }
 
