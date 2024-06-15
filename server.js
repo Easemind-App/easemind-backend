@@ -10,7 +10,7 @@ const { getUserById } = require('./src/services/userService')
 const validate = async (decoded, request, h) => {
   const user = await getUserById(decoded.userId)
   if (user) {
-    return { isValid: true, credentials: user }
+    return { isValid: true, userId: user.userId }
   } else {
     return { isValid: false }
   }
