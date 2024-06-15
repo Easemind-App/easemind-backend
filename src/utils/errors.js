@@ -24,9 +24,20 @@ class InternalServerError extends CustomError {
   }
 }
 
+const joiError = (error) => {
+  const simplifiedMessage = error.details
+    .map((detail) => {
+      const attributeName = detail.path.join('.')
+      return `Missing or invalid ${attributeName} attribute`
+    })
+    .join(', ')
+  return simplifiedMessage
+}
+
 module.exports = {
   CustomError,
   NotFoundError,
   BadRequestError,
   InternalServerError,
+  joiError,
 }
