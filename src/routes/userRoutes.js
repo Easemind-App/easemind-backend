@@ -4,21 +4,33 @@ module.exports = [
   {
     method: 'POST',
     path: '/auth',
-    handler: userController.createUser,
+    options: {
+      auth: false,
+      handler: userController.authorizeUser,
+    },
   },
   {
     method: 'GET',
-    path: '/profile/{id}',
-    handler: userController.getUserById,
+    path: '/profile',
+    options: {
+      auth: 'jwt',
+      handler: userController.getUserById,
+    },
   },
-  {
-    method: 'GET',
-    path: '/test/getUsers',
-    handler: userController.getAllUsers,
-  },
+  // {
+  //   method: 'GET',
+  //   path: '/test/getUsers',
+  //   options: {
+  //     auth: 'jwt',
+  //     handler: userController.getAllUsers,
+  //   },
+  // },
   {
     method: 'PUT',
-    path: '/profile/edit/{id}',
-    handler: userController.updateUser,
+    path: '/profile/edit',
+    options: {
+      auth: 'jwt',
+      handler: userController.updateUser,
+    },
   },
 ]

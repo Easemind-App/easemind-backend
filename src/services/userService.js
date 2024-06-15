@@ -1,20 +1,28 @@
 const db = require('../utils/db')
 const { User, UserDetails } = require('../models/userModel')
 
-const createUser = async (userData) => {
+const authorizeUser = async (userData) => {
   const usersColl = db.collection('users')
 
-  const userDetails = new UserDetails(null, null) // Initiate userDetails with null
+  const userDetails = new UserDetails(null, null)
 
-  const user = new User(userData.userName, userData.email, 1, userDetails)
+  const user = new User(userData.userName, userData.email, true, userDetails)
 
-  const checkUser = await usersColl.where('email', '==', userData.email).get()
+  const checkUser = await usersColl
+    .where('email', '==', userData.email)
+    .where('isActive', '==', true)
+    .get()
 
   if (checkUser.empty) {
-    await usersColl.add(JSON.parse(JSON.stringify(user)))
+    // If no active user is found, create a new one
+    const newUserRef = await usersColl.add(JSON.parse(JSON.stringify(user)))
+    const newUser = await newUserRef.get()
+    return { ...newUser.data(), userId: newUser.id } // Include the user's Firestore document ID
+  } else {
+    // Active user exists, return the existing user data
+    const existingUser = checkUser.docs[0].data()
+    return { ...existingUser, userId: checkUser.docs[0].id }
   }
-
-  return user
 }
 
 const getUserById = async (id) => {
@@ -57,7 +65,7 @@ const updateUser = async (id, userData) => {
 }
 
 module.exports = {
-  createUser,
+  authorizeUser,
   getUserById,
   getAllUsers,
   updateUser,
