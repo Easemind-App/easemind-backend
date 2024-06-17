@@ -8,7 +8,7 @@ const addJournalEntry = async (req, res) => {
       journalDate: Joi.string().required(),
       bmi: Joi.string().required(),
       faceDetection: Joi.string().required(),
-      thoughts: Joi.string().required(),
+      thoughts: Joi.string().min(3).max(70).required(),
     }).required(),
   })
 
@@ -37,13 +37,13 @@ const addJournalEntry = async (req, res) => {
       })
       .code(201)
   } catch (err) {
-    console.error('Unexpected error:', err)
+    // console.error('Unexpected error:', err)
     return res
       .response({
         status: 'error',
-        message: 'Internal server error',
+        message: err.message,
       })
-      .code(500)
+      .code(400)
   }
 }
 
@@ -91,7 +91,7 @@ const updateJournalEntry = async (req, res) => {
       .response({ message: 'Journal entry updated successfully' })
       .code(200)
   } catch (err) {
-    return res.response({ message: err.message }).code(500)
+    return res.response({ status: 'error', message: err.message }).code(500)
   }
 }
 
