@@ -1,6 +1,8 @@
 const userService = require('../services/userService')
 const Joi = require('@hapi/joi')
 const { generateToken } = require('../utils/jsonWebToken')
+const { joiError } = require('../utils/errors')
+const fsDate = require('../utils/fsDate')
 
 const authorizeUser = async (req, res) => {
   const schema = Joi.object({
@@ -36,12 +38,13 @@ const getUserById = async (req, res) => {
       return res.response({ message: 'User not found' }).code(400)
     }
 
-    const { email, isActive, userDetails, userName } = user
+    const { email, userDetails, userName } = user
     if (!userDetails) {
       return res.response({ message: 'User details not found' }).code(400)
     }
 
-    const { dateOfBirth, gender } = userDetails
+    let { dateOfBirth, gender } = userDetails
+    dateOfBirth = fsDate(dateOfBirth)
 
     return res.response({ userName, email, dateOfBirth, gender }).code(200)
   } catch (err) {
@@ -61,14 +64,21 @@ const getAllUsers = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const schema = Joi.object({
-    userName: Joi.string().min(3).max(30).required(),
-    dateOfBirth: Joi.date().required(),
-    gender: Joi.string().valid('L', 'P').required(),
+    userName: Joi.string().min(3).max(30).optional().allow(null),
+    dateOfBirth: Joi.date().iso().optional().allow(null),
+    gender: Joi.string().valid('L', 'P').optional().allow(null),
   })
 
   const { error, value } = schema.validate(req.payload)
+
   if (error) {
-    return res.response(error.details).code(400)
+    const errorMessage = joiError(error)
+    return res
+      .response({
+        status: 'error',
+        message: errorMessage,
+      })
+      .code(400)
   }
 
   try {
@@ -76,9 +86,10 @@ const updateUser = async (req, res) => {
       req.auth.credentials.userId,
       value
     )
+
     return res.response(user).code(200)
   } catch (err) {
-    return res.response(err.message).code(500)
+    return res.response({ status: 'error', message: err.message }).code(400)
   }
 }
 
