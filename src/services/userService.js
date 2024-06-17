@@ -52,10 +52,25 @@ const updateUser = async (id, userData) => {
     throw new Error('User not found')
   }
 
-  await userRef.update({
-    'userDetails.dateOfBirth': userData.dateOfBirth,
-    'userDetails.gender': userData.gender,
-  })
+  let updateData = {}
+
+  if (userData.userName !== null) {
+    updateData.userName = userData.userName
+  }
+
+  if (userData.dateOfBirth !== null) {
+    updateData['userDetails.dateOfBirth'] = userData.dateOfBirth
+  }
+
+  if (userData.gender !== null) {
+    updateData['userDetails.gender'] = userData.gender
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    return { message: 'User updated successfully' }
+  }
+
+  await userRef.update(updateData)
 
   return { message: 'User updated successfully' }
 }
