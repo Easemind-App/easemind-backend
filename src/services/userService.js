@@ -62,8 +62,8 @@ const updateUser = async (id, userData) => {
     updateData.userName = userData.userName
   }
 
-  if (userData.dateOfBirth !== null) {
-    updateData['userDetails.dateOfBirth'] = userData.dateOfBirth
+  if (userData.age !== null) {
+    updateData['userDetails.age'] = userData.age
   }
 
   if (userData.gender !== null) {

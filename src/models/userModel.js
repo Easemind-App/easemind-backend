@@ -8,8 +8,8 @@ class User {
 }
 
 class UserDetails {
-  constructor(dateOfBirth, gender) {
-    this.dateOfBirth = dateOfBirth
+  constructor(age, gender) {
+    this.age = age
     this.gender = gender
   }
 }

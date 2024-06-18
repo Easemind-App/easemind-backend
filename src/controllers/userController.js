@@ -2,7 +2,7 @@ const userService = require('../services/userService')
 const Joi = require('@hapi/joi')
 const { generateToken } = require('../utils/jsonWebToken')
 const { joiError } = require('../utils/errors')
-const fsDate = require('../utils/fsDate')
+// const fsDate = require('../utils/fsDate')
 
 const authorizeUser = async (req, res) => {
   const schema = Joi.object({
@@ -43,10 +43,10 @@ const getUserById = async (req, res) => {
       return res.response({ message: 'User details not found' }).code(400)
     }
 
-    let { dateOfBirth, gender } = userDetails
-    dateOfBirth = fsDate(dateOfBirth)
+    let { age, gender } = userDetails
+    // age = fsDate(age)
 
-    return res.response({ userName, email, dateOfBirth, gender }).code(200)
+    return res.response({ userName, email, age, gender }).code(200)
   } catch (err) {
     console.log(err.message)
     return res.response(err.message).code(500)
@@ -65,7 +65,7 @@ const getAllUsers = async (req, res) => {
 const updateUser = async (req, res) => {
   const schema = Joi.object({
     userName: Joi.string().min(3).max(30).optional().allow(null),
-    dateOfBirth: Joi.date().iso().optional().allow(null),
+    age: Joi.string().optional().allow(null),
     gender: Joi.string().valid('L', 'P').optional().allow(null),
   })
 
