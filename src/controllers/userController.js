@@ -17,7 +17,7 @@ const authorizeUser = async (req, res) => {
 
   try {
     const user = await userService.authorizeUser(value)
-    console.log(user)
+    // console.log(user)
     const token = generateToken(user)
     return res
       .response({

@@ -7,7 +7,7 @@ const generateToken = (user) => {
 
   return Jwt.sign(payload, process.env.JWT_SECRET, {
     algorithm: 'HS256',
-    expiresIn: '240h',
+    expiresIn: '24h',
   })
 }
 
@@ -20,7 +20,7 @@ const refreshToken = (token) => {
     }
     return Jwt.sign(payload, process.env.JWT_SECRET, {
       algorithm: 'HS256',
-      expiresIn: '240h',
+      expiresIn: '24h',
     })
   } catch (error) {
     console.error('Error refreshing token:', error)

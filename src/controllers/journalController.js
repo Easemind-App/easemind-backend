@@ -6,7 +6,6 @@ const addJournalEntry = async (req, res) => {
   const schema = Joi.object({
     journalData: Joi.object({
       journalDate: Joi.string().required(),
-      bmi: Joi.string().required(),
       faceDetection: Joi.string().required(),
       thoughts: Joi.string().min(3).max(70).required(),
     }).required(),

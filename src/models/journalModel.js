@@ -1,7 +1,6 @@
 class Journal {
   constructor(
     journalDate,
-    bmi,
     faceDetection,
     thoughtSentiment,
     thoughts,
@@ -10,7 +9,6 @@ class Journal {
     isActive
   ) {
     this.journalDate = journalDate
-    this.bmi = bmi
     this.faceDetection = faceDetection
     this.thoughtSentiment = thoughtSentiment
     this.thoughts = thoughts
