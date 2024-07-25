@@ -1,4 +1,5 @@
 const db = require('../utils/db')
+const axios = require('axios')
 const Journal = require('../models/journalModel')
 const { getQuoteBySentiment } = require('./quoteService')
 const { BadRequestError } = require('../utils/errors')
@@ -6,8 +7,27 @@ const { BadRequestError } = require('../utils/errors')
 const addJournalEntry = async (userId, journalData) => {
   const journalRef = db.collection('users').doc(userId).collection('journals')
 
-  const result = 'yes'
-  const quote = await getQuoteBySentiment('happy')
+  // Fetch result from the second API
+  let result
+  try {
+    const resultResponse = await axios.post(
+      'https://machine-learning-interface-hbfyjtc7ra-as.a.run.app/model/predict',
+      {
+        text: journalData.thoughts,
+        fer_label: journalData.faceDetection,
+      }
+    )
+    result = resultResponse.data.prediction
+
+    if (!result) {
+      throw new Error('No result returned from the API')
+    }
+  } catch (error) {
+    console.error('Result API call failed:', error.message)
+    throw new BadRequestError('Failed to get result')
+  }
+
+  const quote = await getQuoteBySentiment(result)
   if (!quote) {
     throw new BadRequestError('Sentiment given is incorrect')
   }
